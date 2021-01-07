@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.pythong.cqupt.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="top.pythong.cqupt.pojo.doa.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="isAccountNonExpired" javaType="BOOLEAN" property="isAccountNonExpired" />
+    <result column="isAccountNonLocked" javaType="BOOLEAN" property="isAccountNonLocked" />
+    <result column="isCredentialsNonExpired" javaType="BOOLEAN" property="isCredentialsNonExpired" />
+    <result column="isEnabled" javaType="BOOLEAN" property="isEnabled" />
+
+    <collection property="roles" ofType="String" >
+      <result property="rname" column="rname" />
+    </collection>
+  </resultMap>
+
+  <select id="selectUserByUsername" resultMap="BaseResultMap" parameterType="String">
+    select uid,
+           username,
+           email,
+           password,
+           img_url,
+           sex,
+           age,
+           isAccountNonExpired,
+           isAccountNonLocked,
+           isCredentialsNonExpired,
+           isEnabled,
+           u.created,
+           r.rid,
+           r.rname,
+           r.created as rCreated
+    from user as u
+           left join user_role as ur on ur.u_id = u.uid
+           left join role as r on ur.r_id = r.rid
+    where u.username = #{username}
+  </select>
+</mapper>
